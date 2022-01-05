@@ -2,22 +2,35 @@ import React, { useState, useEffect } from 'react';
 import './style.css';
 
 export default function App() {
-  let arr = [0, 0, 0, 0, 0, 0, 0].fill([
-    'white',
-    'white',
-    'white',
-    'white',
-    'white',
-    'white',
-  ]);
-  const [turns, setTurns] = useState('Red');
+  let arr = [
+    ['white', 'white', 'white', 'white', 'white', 'white'],
+    ['white', 'white', 'white', 'white', 'white', 'white'],
+    ['white', 'white', 'white', 'white', 'white', 'white'],
+    ['white', 'white', 'white', 'white', 'white', 'white'],
+    ['white', 'white', 'white', 'white', 'white', 'white'],
+    ['white', 'white', 'white', 'white', 'white', 'white'],
+    ['white', 'white', 'white', 'white', 'white', 'white'],
+  ];
+  const [turns, setTurns] = useState('red');
   const [game, setGame] = useState(arr);
+  const [stat, setstat] = useState([5, 5, 5, 5, 5, 5, 5]);
   const onButtonturn = (index) => {
-    console.log(index);
+    if (stat[index] === -1) return
+    let temp = [...game];
+    temp[index][stat[index]] = turns;
+    let tem = [...stat];
+    tem[index] = tem[index] - 1;
+    setGame(temp);
+    setstat(tem);
+    if (turns == 'red') {
+      setTurns('blue');
+    } else {
+      setTurns('red');
+    }
   };
   return (
     <div className="main_div">
-      {arr.map((balls, idx) => {
+      {game.map((balls, idx) => {
         return (
           <div className="child">
             <button
@@ -30,9 +43,9 @@ export default function App() {
             </button>
             {balls.map((item, id) => {
               return (
-                <div className="boxes">
+                <div key={id} className="boxes">
                   <button
-                    style={{ 'background-color': item }}
+                    style={{ backgroundColor: item }}
                     key={id}
                     className="ele"
                   ></button>
